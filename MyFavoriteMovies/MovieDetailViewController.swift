@@ -38,7 +38,7 @@ class MovieDetailViewController: UIViewController {
         
         super.viewWillAppear(animated)
         
-        if let movie = movie {
+        if let movie = movie {  // passed from GenreTableViewController.swift
             
             // setting some defaults...
             posterImageView.image = UIImage(named: "film342.png")
@@ -103,7 +103,7 @@ class MovieDetailViewController: UIViewController {
                 
                 for movie in movies {
                     if movie.id == self.movie!.id {
-                        self.isFavorite = true
+                        self.isFavorite = true // .isFavorite(true/ false) - value for setting UI
                     }
                 }
                 
@@ -194,14 +194,16 @@ class MovieDetailViewController: UIViewController {
             Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID!
         ]
         
+        
         /* 2/3. Build the URL, Configure the request */ // withPathExtension: passing anything after 3/
-        var request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String: AnyObject], withPathExtension: "account/\(appDelegate.userID!)/favorite)"))
+        var request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String: AnyObject], withPathExtension: "/account/\(appDelegate.userID!)/favorite"))
         
         print("request BEFORE adding header/ body is ...\(request)")
         
+        // add header, body and method to request
         request.httpMethod = "POST"
-        request.allHTTPHeaderFields = headers
-        request.httpBody = postData
+        request.allHTTPHeaderFields = headers  // add headers as it is
+        request.httpBody = postData  // add json format body (already converted from swift dict)
         
         print("request AFTER adding header/ body is ...\(request)")
         print("Request's body is ....\(request.httpBody as AnyObject)")
@@ -247,14 +249,14 @@ class MovieDetailViewController: UIViewController {
                 print("Unrecognized '\(Constants.TMDBResponseKeys.StatusCode)' in  \(parsedData)")
                 return
             }
-            
-            
+
             /* 6. Use the data! */
             // reset isFavorite after user toggle
             self.isFavorite = shouldFavorite
             
             // If the favorite/unfavorite request completes, then use this code to update the UI...
-             
+            // .shouldFavorite(true/ false) - value for setting UI
+            
              performUIUpdatesOnMain {
                 self.favoriteButton.tintColor = (shouldFavorite) ? nil : .black
              }

@@ -188,6 +188,7 @@ extension GenreTableViewController {
         let controller = storyboard!.instantiateViewController(withIdentifier: "MovieDetailViewController") as! MovieDetailViewController
         controller.movie = movies[(indexPath as NSIndexPath).row]
         navigationController!.pushViewController(controller, animated: true)
+        print("chosen movie is ..\(movies[(indexPath as NSIndexPath).row]))")
     }
 }
 
